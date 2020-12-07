@@ -1,5 +1,5 @@
 {
-  "name": "rabbitmq-rpc",
+  "name": "promise-rabbitmq-rpc",
   "url": "https://github.com/alaraiabdiallah/rabbitmq-rpc",
   "version": "1.0.0",
   "description": "Helper for using RabbitMQ RPC",
