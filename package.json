@@ -3,6 +3,10 @@
   "url": "https://github.com/alaraiabdiallah/rabbitmq-rpc",
   "version": "1.0.0",
   "description": "Helper for using RabbitMQ RPC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alaraiabdiallah/rabbitmq-rpc.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,9 +20,8 @@
   "author": "Ala Rai AbdiAllah",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.5.1"
+    "amqplib": "^0.5.1",
+    "uuid": "^8.3.1"
   },
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  }
+  "devDependencies": {}
 }
