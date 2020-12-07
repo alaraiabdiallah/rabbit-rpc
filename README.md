@@ -24,7 +24,7 @@ $ npm install --save rabbitmq-rpc
 ```javascript
 'use strict';
 
-const {Server} = require('rabbitmq-rpc');
+const {Server} = require('promise-rabbitmq-rpc');
 
 const rpcServer = new Server({
    uri_connect: "amqp://root:root@localhost:5672/",
@@ -63,7 +63,7 @@ rpcServer.listen();
 ## As Client
 
 ```javascript
-const {Client} = require('rabbitmq-rpc');
+const {Client} = require('promise-rabbitmq-rpc');
 
 const client = new Client({
     uri_connect: "amqp://root:root@localhost:5672/",
