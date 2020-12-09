@@ -1,11 +1,11 @@
 # RabbitMQ RPC
 
+> This library still under development, please don't use for production use
+
 # Thanks to
 
 inspired by: [kumangxxx](https://github.com/kumangxxx)
 visit the [repo](https://github.com/kumangxxx/gits-rabbit-rpc-server)
-
-
 
 ## Description
 
@@ -46,7 +46,7 @@ rpcServer.subscribe('rpc.test2', (stringBody, callback) => {
     } catch (error) {
         return callback({code:0, message: error.message}, null);
     }
-     
+
 });
 
 // Subscribe when timeout
