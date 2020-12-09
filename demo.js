@@ -4,7 +4,7 @@ const {Server} = require('./index');
 
 const rpcServer = new Server({
    uri_connect: "amqp://root:root@localhost:5672/",
-   exchange: {name:"rpc", type: "topic"}
+   exchange: {name:"rpc", type: "direct"}
 });
 
 // Subscribe success
@@ -14,16 +14,16 @@ rpcServer.subscribe('rpc.test', (stringBody, callback) => {
 });
 
 // Subscribe error
-rpcServer.subscribe('rpc.test2', (stringBody, callback) => {
-    try {
-        var users = [{id: 0, email: 'someemail'}];
-        throw new Error("ada error");
-        return callback(null, JSON.stringify(users));    
-    } catch (error) {
-        return callback({code:0, message: error.message}, null);
-    }
+// rpcServer.subscribe('rpc.test2', (stringBody, callback) => {
+//     try {
+//         var users = [{id: 0, email: 'someemail'}];
+//         throw new Error("ada error");
+//         return callback(null, JSON.stringify(users));    
+//     } catch (error) {
+//         return callback({code:0, message: error.message}, null);
+//     }
      
-});
+// });
 
 // Subscribe when timeout
 rpcServer.subscribe('rpc.test3', (stringBody, callback) => {

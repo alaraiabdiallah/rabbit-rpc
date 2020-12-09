@@ -4,9 +4,15 @@ const client = new Client({
     uri_connect: "amqp://root:root@localhost:5672/",
 })
 
-const test = async () => {
-    const getData = await client.publish('rpc.test3', "hallo");
-    console.log(getData)
+const someFunc = async(i) => {
+    const data = await client.publish('rpc.test', `Hallo ${i}`);
+    console.log(`Loop ${i}: ${data}`);
 }
 
+const test = async () => {
+    let concurrent = []
+    for(let i = 1; i <= 100; i++){
+        await someFunc(i);
+    }
+}
 test();
