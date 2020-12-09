@@ -90,7 +90,6 @@ module.exports = class Server {
         let channel = this._channel;
         let {name:exchange_name} = this._exchange;
         let {name:queue_name} = this._queue;
-        await this._channel.deleteQueue(queue_name);
         await this._channel.assertQueue(queue_name, {durable: true});
         let queues = Object.keys(this._handlers).map(async (routing_key) =>{
             return await channel.bindQueue(queue_name, exchange_name, routing_key);
