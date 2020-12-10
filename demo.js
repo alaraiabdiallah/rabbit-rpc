@@ -9,8 +9,7 @@ const rpcServer = new Server({
 
 // Subscribe success
 rpcServer.subscribe('rpc.test', (stringBody, callback) => {
-    var users = [{id: 0, email: 'someemail'}];
-    callback(null, JSON.stringify(users)); 
+    callback(null, stringBody); 
 });
 
 // Subscribe error

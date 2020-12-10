@@ -1,6 +1,6 @@
 const amqp = require('amqplib');
 const { v4: uuid } = require('uuid');
-module.exports = class Client {
+class Client {
     _initProps() {
         this._uri_connect = null;
         this._connection = null;
@@ -10,6 +10,7 @@ module.exports = class Client {
         };
         this._queue = null;
         this._timeout = 5000;
+        this._retry = 3
     }
     constructor({uri_connect, exchange, timeout}){
         this._initProps()
@@ -18,7 +19,7 @@ module.exports = class Client {
         this._timeout = timeout || this._timeout;
     }
 
-    async _makeConnection(){
+    async makeConnection(){
         this._connection = await amqp.connect(this._uri_connect);
         this._channel = await this._connection.createChannel();
         this._queue = await this._channel.assertQueue('', {exclusive: true});
@@ -59,22 +60,32 @@ module.exports = class Client {
         
     }
 
-    async publish(route, string_body, timeout = this._timeout) {
+    async publish(route, string_body, options, tries = 1) {
+        let timeout = (options.timeout || this._timeout) * (tries * tries);
+        let retry = options.retry || this._retry;
         try {
-            await this._makeConnection();
             const {name: exchange_name} = this._exchange;
             const {queue: queue_name} = this._queue;
             const correlationId = uuid();
-            console.log(`Queue name : ${queue_name}`);
+            // console.log(`Queue name : ${queue_name}`);
             await this._channel.publish(exchange_name, route, Buffer.from(string_body), { correlationId, replyTo: queue_name, contentType: "text/plain" });
             const response = await this._getResponse(correlationId, timeout);
             await this._channel.deleteQueue(queue_name);
-            await this._connection.close();
+            await this.close();
             return Promise.resolve(response);    
         } catch (error) {
-            await this._connection.close();
-            return Promise.reject(error);
+            await this.close();
+            return tries <= retry ? this.publish(route, string_body, options, tries + 1) : Promise.reject(error);
         }
           
     }
+
+    async close() {
+        await this._connection.close();
+    }
+}
+module.exports = async function(params) {
+    const client = new Client(params);
+    await client.makeConnection();
+    return client;
 }
